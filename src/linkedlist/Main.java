@@ -1,7 +1,7 @@
 package linkedlist;
 
-import qurue.ArrayQueue;
-import qurue.Queue;
+import queue.ArrayQueue;
+import queue.Queue;
 
 
 import java.util.Random;

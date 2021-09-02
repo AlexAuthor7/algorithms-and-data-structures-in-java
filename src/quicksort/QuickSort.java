@@ -78,10 +78,54 @@ public class QuickSort {
         swap(arr,l,j);
         return j;
     }
-    public static <E extends Comparable<E>> void swap (E[] arr,int i,int j){
-        E temp = arr[i];
+    public static <E extends Comparable<E>> void sort3ways(E[] arr){
+        Random rnd = new Random();
+        sort3ways(arr, 0, arr.length - 1, rnd);
+    }
+
+    private static <E extends Comparable<E>> void sort3ways(E[] arr, int l, int r, Random rnd){
+
+        if(l >= r) return;
+
+
+        /** 三路快速排序的 partition 过程 **/
+
+        // 生成 [l, r] 之间的随机索引
+        int p = l + rnd.nextInt(r - l + 1);
+        swap(arr, l, p);
+
+        // arr[l + 1, lt] < v, arr[lt + 1, i - 1] == v, arr[gt, r] > v
+        int lt = l, i = l + 1, gt = r + 1;
+        while(i < gt){
+
+            if(arr[i].compareTo(arr[l]) < 0){
+                lt ++;
+                swap(arr, i, lt);
+                i ++;
+            }
+            else if(arr[i].compareTo(arr[l]) > 0){
+                gt --;
+                swap(arr, i, gt);
+            }
+            else{ // arr[i] == v
+                i ++;
+            }
+        }
+
+        swap(arr, l, lt);
+
+        /** 三路快速排序的 partition 过程结束 **/
+
+        // 递归调用
+        sort3ways(arr, l, lt - 1, rnd);
+        sort3ways(arr, gt, r, rnd);
+    }
+
+    private static <E> void swap(E[] arr, int i, int j){
+
+        E t = arr[i];
         arr[i] = arr[j];
-        arr[j] = temp;
+        arr[j] = t;
     }
     public static void main(String[] args) {
         int n = 1000000;

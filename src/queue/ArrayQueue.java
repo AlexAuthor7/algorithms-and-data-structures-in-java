@@ -1,4 +1,4 @@
-package qurue;
+package queue;
 
 import array.Array;
 
@@ -8,7 +8,7 @@ import array.Array;
  * @Description: qurue
  * @Verxion: 1.0
  */
-public class ArrayQueue<E> implements qurue.Queue<E> {
+public class ArrayQueue<E> implements queue.Queue<E> {
     Array<E> array;
     public ArrayQueue (int capacity){
         array = new Array<>(capacity);

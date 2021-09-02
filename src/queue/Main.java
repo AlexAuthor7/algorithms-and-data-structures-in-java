@@ -1,4 +1,4 @@
-package qurue;
+package queue;
 
 import java.util.Random;
 
@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Main {
     //测试使用q 运行opCount 个 enqueue 和 的dequeue 操作所需要的时间，单位：秒
-    private static double testQueue(qurue.Queue<Integer> q, int opCount){
+    private static double testQueue(queue.Queue<Integer> q, int opCount){
         long start = System.nanoTime();
         Random random = new Random();
         for (int i = 0; i < opCount; i++) {
@@ -26,9 +26,9 @@ public class Main {
     }
     public static void main(String[] args) {
         int opCount = 100000;
-        qurue.ArrayQueue<Integer> arrayQueue = new qurue.ArrayQueue<Integer>();
+        queue.ArrayQueue<Integer> arrayQueue = new queue.ArrayQueue<Integer>();
         double time1 = testQueue(arrayQueue,opCount);
-        qurue.LoopQueue<Integer> loopQueue = new qurue.LoopQueue<Integer>();
+        queue.LoopQueue<Integer> loopQueue = new queue.LoopQueue<Integer>();
         double time2 = testQueue(loopQueue,opCount);
 
         System.out.println("ArrayQueue, Time: " + time1 +" s");

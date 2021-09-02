@@ -1,6 +1,6 @@
 package linkedlist;
 
-import qurue.Queue;
+import queue.Queue;
 
 /**
  * @Auther: Alex

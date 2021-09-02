@@ -1,40 +1,33 @@
-package qurue;
+package queue;
 
 /**
  * @Auther: Alex
- * @Date: 2021/1/7 - 01 - 07 -20:00
+ * @Date: 2021/1/6 - 01 - 06 -21:04
  * @Description: qurue
  * @Verxion: 1.0
  */
-public class ArrayDeque<E> implements qurue.Deque<E> {
+public class LoopQueue<E> implements queue.Queue<E> {
     private E[] data;
-    private int front;
-    private int tail;
+    //front 用于记录队首;tail用于记录队尾
+    private int front,tail;
     private int size;
-    public ArrayDeque(int capacity){
+
+    public LoopQueue (int capacity){
         data = (E[])new Object[capacity + 1];
         front = 0;
         tail = 0;
         size = 0;
     }
-    public ArrayDeque(){
+    public LoopQueue(){
         this(10);
     }
-
-    @Override
-    public void addFirst(E e) {
-        if((tail + 1) % data.length == front){
-            resize(getCapacity() * 2);
-        }
-        front = front != 0 ? (--front) : (front = data.length - 1);
-        data[front] = e;
-
-        size++;
+    public int getCapacity(){
+        return data.length - 1;
     }
 
     @Override
-    public void addLast(E e) {
-        if(isEmpty()){
+    public void enqueue(E e) {
+        if((tail + 1) % data.length == front){
             resize(getCapacity() * 2);
         }
         data[tail] = e;
@@ -43,13 +36,13 @@ public class ArrayDeque<E> implements qurue.Deque<E> {
     }
 
     @Override
-    public E removeFirst() {
+    public E dequeue() {
         if(isEmpty()){
             throw new IllegalArgumentException("Cannot dequeue from an empty queue.");
         }
         E ret = data[front];
         data[front] = null;
-        front  = front != (data.length - 1) ? (++front):(front = 0);
+        front = (front + 1) % data.length;
         size--;
         if(size == getCapacity() / 4 && getCapacity() / 2 !=0){
             resize(getCapacity() /2 );
@@ -58,20 +51,10 @@ public class ArrayDeque<E> implements qurue.Deque<E> {
     }
 
     @Override
-    public E removeLast() {
-        if(isEmpty()){
-            throw new IllegalArgumentException("Cannot dequeue from an empty queue.");
-        }
-        E ret = data[tail - 1];
-        data[tail - 1] = null;
-        tail = tail != 0 ? (--tail) : (tail = data.length - 1);
-        size--;
-
-        return null;
-    }
-
-    @Override
     public E getFront() {
+        if(isEmpty()){
+            throw new IllegalArgumentException("Queue is empty");
+        }
         return data[front];
     }
 
@@ -82,26 +65,28 @@ public class ArrayDeque<E> implements qurue.Deque<E> {
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return front == tail;
     }
-    public int getCapacity(){
-        return data.length - 1;
-    }
+
     private void resize(int newCapacity){
         E[] newData = (E[])new Object[newCapacity + 1];
         for (int i = 0; i < size; i++) {
             newData[i] = data[(i + front) % data.length];
+            //在循环队列中 角标与实际位置 存在 front 的偏移 ,为了防止角标越界 %data.length
         }
         data = newData;
         front = 0;
         tail = size;
     }
 
+    /**
+    在resize() 和 toString() 方法中，使用的遍历队列的方式是不一样的，但可以互相替换
+     */
     @Override
-    public String toString() {
+    public String toString(){
         StringBuilder res = new StringBuilder();
-        res.append(String.format("ArrayDeque: size = %d , capacity = %d\n",size,getCapacity()));
-        res.append("front [");
+        res.append(String.format("Queue: size = %d , capacity = %d\n",size,getCapacity()));
+        res.append("front[");
         for (int i = front; i != tail;i = (++i) % data.length) {
             res.append(data[i]);
             if((i + 1) % data.length != tail){
@@ -110,19 +95,19 @@ public class ArrayDeque<E> implements qurue.Deque<E> {
         }
         res.append("] tail");
         return res.toString();
+        //注意循环条件的写法 从front 开始，为防止脚标越界，i++之后再 %data.length
     }
     public static void main(String[] args){
 
-        ArrayDeque<Integer> queue = new ArrayDeque<>();
-        for(int i = 10 ; i >= 0 ; i--){
-            queue.addFirst(i);
+        queue.LoopQueue2<Integer> queue = new queue.LoopQueue2<>();
+        for(int i = 0 ; i < 10 ; i ++){
+            queue.enqueue(i);
             System.out.println(queue);
+
+            if(i % 3 == 2){
+                queue.dequeue();
+                System.out.println(queue);
+            }
         }
-        queue.addLast(11);
-        System.out.println(queue);
-        queue.removeFirst();
-        System.out.println(queue);
-        queue.removeLast();
-        System.out.println(queue);
     }
 }

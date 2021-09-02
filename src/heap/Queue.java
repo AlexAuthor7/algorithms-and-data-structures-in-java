@@ -1,4 +1,4 @@
-package qurue;
+package heap;
 
 /**
  * @Auther: Alex

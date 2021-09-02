@@ -25,6 +25,13 @@ public class Array<E> {
     public Array(){
         this(10);
     }
+
+    public Array(E[] arr){
+        data = (E[])new Object[arr.length];
+        for(int i = 0; i < arr.length ; i++)
+            data[i] = arr[i];
+        size = arr.length;
+    }
     /**
      * @Description: 获取数组中元素的个数 size
      */
@@ -192,5 +199,10 @@ public class Array<E> {
 
     public E getFirst(){
         return get(0);
+    }
+    public void swap(int i, int j){
+        E temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
     }
 }

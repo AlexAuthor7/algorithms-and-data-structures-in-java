@@ -138,7 +138,6 @@ public class LinkedList<E> {
         return remove(size - 1);
     }
 
-
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();

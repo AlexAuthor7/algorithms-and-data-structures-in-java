@@ -61,14 +61,5 @@ public class MergeSort3 {
             arr[j] = t;
         }
     }
-    public static void main(String[] args){
-        Integer[] arr = {9,8,76,6,5,43,2,2,1};
-        sortBU(arr);
-        for(int i:arr){
-            System.out.println(i + " ");
-        }
-        int n = 10000000;
-        SortingHelper.sortTest("MergeSort",n);
-        SortingHelper.sortTest("MergeSortBU",n);
-    }
+
 }
